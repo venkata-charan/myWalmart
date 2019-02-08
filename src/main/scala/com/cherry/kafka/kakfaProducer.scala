@@ -18,15 +18,16 @@ object kakfaProducer extends App {
 
   val props: Properties = new Properties()
   props.put("bootstrap.servers", brokerip)
-  props.put("client.id", "ScalaProducerExample")
+  props.put("transactional.id", "my-transactional-id")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
   props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
 
   val myProducer = new KafkaProducer[String, String](props)
 
-
+ myProducer.initTransactions()
 
   try {
+    myProducer.beginTransaction()
     for (i <- Range(0, events)) {
       val tim = new Date().getTime
       val ip = "192.34.233." + rnd.nextInt(255)
@@ -34,6 +35,7 @@ object kakfaProducer extends App {
       val data = new ProducerRecord[String, String](topic, ip, msg)
       myProducer.send(data)
     }
+    myProducer.commitTransaction()
   } catch {
     case e: ProducerFencedException =>
       println("Sorry not able to send data " + e)
