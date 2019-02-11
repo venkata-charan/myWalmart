@@ -30,12 +30,16 @@ object kafkaConsumer extends App {
   println(s"Starting Reading messages from $topicname ....................")
 
 
-  val records:ConsumerRecords[String,String] = consumer.poll(Duration.ofSeconds(60))
+  val records:ConsumerRecords[String,String] = consumer.poll(Duration.ofSeconds(1))
+  while (true) {
 
-  for (record <- records.iterator()) {
-    println(record)
+    println(s"Polling for records for 1 secs")
+    for (record <- records.iterator()) {
+      println(record)
+    }
+    println(s"Reading messages from $topicname completed successfully ...................")
   }
-  println(s"Reading messages from $topicname completed successfully ...................")
+
   consumer.close()
 
 }
