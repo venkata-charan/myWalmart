@@ -10,7 +10,7 @@ object kafkaConsumer extends App {
 
   // get the required parameters to run kafka consumer - topic name and zookeeper instance
   // set the props --> create kafka consumer object and pass props to it
-  // subscribe to topics and start reading data
+  // subscribe to topics and start reading data , records to record conversion issue
 
   val topicname = args(0)
   val brokerip = args(1)
