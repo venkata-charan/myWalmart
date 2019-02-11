@@ -21,8 +21,8 @@ object kafkaConsumer extends App {
   props.put("group.id", "test")
   props.put("enable.auto.commit", "true")
   props.put("auto.commit.interval.ms", "1000")
-  props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+  props.put("key.deserializer", "org.apache.kafka.common.serialization.StringSerializer")
+  props.put("value.deserializer", "org.apache.kafka.common.serialization.StringSerializer")
 
   val consumer = new KafkaConsumer[String, String](props)
   consumer.subscribe(Collections.singletonList(topicname))
