@@ -2,8 +2,8 @@ package com.cherry.kafka
 
 import java.time.Duration
 import java.util.{Collections, Properties}
-
-import org.apache.kafka.clients.consumer.{ConsumerRecord, KafkaConsumer}
+import scala.collection.JavaConverters._
+import org.apache.kafka.clients.consumer.{ConsumerRecord, ConsumerRecords, KafkaConsumer}
 
 object kafkaConsumer extends App {
 
@@ -30,9 +30,9 @@ object kafkaConsumer extends App {
   println(s"Starting Reading messages from $topicname ....................")
 
 
-  val records = consumer.poll(Duration.ofSeconds(60))
+  val records:ConsumerRecords[String,String] = consumer.poll(Duration.ofSeconds(60))
 
-  for (record <- records) {
+  for (record <- asScalaIteratorConverter(records.iterator())) {
     println(record)
   }
   println(s"Reading messages from $topicname completed successfully ...................")
