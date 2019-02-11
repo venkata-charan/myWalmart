@@ -31,7 +31,7 @@ object kafkaConsumer extends App {
 
 
 
-  for(i <- Range(1 to 20)) {
+  for(i <- Range(1 , 20)) {
 
     val records:ConsumerRecords[String,String] = consumer.poll(Duration.ofSeconds(1))
     println(s"Polling for records for 1 secs")
