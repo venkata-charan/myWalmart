@@ -17,7 +17,7 @@ object kafkaConsumer extends App {
 
   val props: Properties = new Properties()
 
-  props.put("zookeeper.connect", brokerip)
+  props.put("bootstrap.servers", brokerip)
   props.put("group.id", "test")
   props.put("enable.auto.commit", "true")
   props.put("auto.commit.interval.ms", "1000")
