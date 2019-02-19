@@ -16,10 +16,8 @@ object StreamKafka extends App {
   val topicset = Set(args(0))
   val kafkaParams = Map("metadata.broker.list" -> args(1))
 
-  val lines = KafkaUtils
-    .createDirectStream[String,String,StringDecoder,StringDecoder](ssc,kafkaParams,topicset).map(_._2)
-
-  lines.foreachRDD((rdd,time)=>rdd.map(x => println("Printing records "+ time + x )))
+  KafkaUtils
+    .createDirectStream[String,String,StringDecoder,StringDecoder](ssc,kafkaParams,topicset).map(_._2).print()
 
   ssc.start()
   ssc.awaitTermination()
