@@ -2,14 +2,14 @@ package com.cherry.stream
 
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.kafka.KafkaUtils
-import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.streaming.{Minutes, Seconds, StreamingContext}
 import kafka.serializer.StringDecoder
 
 
 object StreamState extends App {
 
   val conf = new SparkConf().setAppName("Simple Streaming Application").setMaster("local[2]")
-  val ssc = new StreamingContext(conf, Seconds(1))
+  val ssc = new StreamingContext(conf, Minutes(30))
   val sc = ssc.sparkContext
   sc.setLogLevel("ERROR")
 
