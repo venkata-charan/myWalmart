@@ -9,21 +9,25 @@ import kafka.serializer.StringDecoder
 object StreamState extends App {
 
   val conf = new SparkConf().setAppName("Simple Streaming Application").setMaster("local[2]")
-  val ssc = new StreamingContext(conf, Seconds(10))
+  val ssc = new StreamingContext(conf, Seconds(2))
   val sc = ssc.sparkContext
   sc.setLogLevel("ERROR")
 
   val topicset = Set(args(0))
-  val kafkaParams = Map("metadata.broker.list" -> args(1), "fetch.message.max.bytes" -> "52428800")
+  val kafkaParams = Map[String, String]("metadata.broker.list" -> args(1))
 
-  val lines =
+  val messages  =
     KafkaUtils
       .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset)
-      .map(x => (x._1,1))
-      .reduceByKey(_+_)
-      .repartition(1).saveAsTextFiles("hdfs:///user/charanrajlv3971/kafkaDirectStream")
+//      .map(x => (x._1,1))
+//      .reduceByKey(_+_)
+//      .repartition(1).saveAsTextFiles("hdfs:///user/charanrajlv3971/kafkaDirectStream")
 
-
+  // Get the lines, split them into words, count the words and print
+  val lines = messages.map(_._2)
+  val words = lines.flatMap(_.split(" "))
+  val wordCounts = words.map(x => (x, 1L)).reduceByKey(_ + _)
+  wordCounts.print()
 
 
 //  lines.foreachRDD( rdd => {
