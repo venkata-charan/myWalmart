@@ -9,7 +9,7 @@ import kafka.serializer.StringDecoder
 object StreamState extends App {
 
   val conf = new SparkConf().setAppName("Simple Streaming Application").setMaster("local[2]")
-  val ssc = new StreamingContext(conf, Minutes(30))
+  val ssc = new StreamingContext(conf, Seconds(30))
   val sc = ssc.sparkContext
   sc.setLogLevel("ERROR")
 
@@ -18,15 +18,26 @@ object StreamState extends App {
 
   val lines =
     KafkaUtils
-      .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset)
-      .map(x => {
-        val list1 = x._2.split(",")
-        val ip = list1(2)
-        (ip, 1)
-      })
+      .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset).map(_._2)
 
-  val runningCounts = lines.updateStateByKey[Int](updateFunction _)
-  runningCounts.print()
+  lines.foreachRDD( rdd => {
+
+    if( rdd.count()>0 ) {
+      println("printing messages from kafka")
+      val repart_Rdd = rdd.repartition(1).cache()
+      repart_Rdd.collect()
+    }
+
+  })
+
+//    .map(x => {
+//      val list1 = x._2.split(",")
+//      val ip = list1(2)
+//      (ip, 1)
+//    })
+//
+//  val runningCounts = lines.updateStateByKey[Int](updateFunction _)
+//  runningCounts.print()
 
   ssc.checkpoint("hdfs:///user/charanrajlv3971/checkpoint/")
   ssc.start()
