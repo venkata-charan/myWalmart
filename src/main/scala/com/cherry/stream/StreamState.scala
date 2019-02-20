@@ -14,7 +14,7 @@ object StreamState extends App {
   sc.setLogLevel("ERROR")
 
   val topicset = Set(args(0))
-  val kafkaParams = Map("metadata.broker.list" -> args(1))
+  val kafkaParams = Map("metadata.broker.list" -> args(1), "fetch.message.max.bytes" -> "52428800")
 
   val lines =
     KafkaUtils
