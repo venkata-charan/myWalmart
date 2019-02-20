@@ -9,7 +9,7 @@ import kafka.serializer.StringDecoder
 object StreamState extends App {
 
   val conf = new SparkConf().setAppName("Simple Streaming Application").setMaster("local[2]")
-  val ssc = new StreamingContext(conf, Seconds(30))
+  val ssc = new StreamingContext(conf, Seconds(10))
   val sc = ssc.sparkContext
   sc.setLogLevel("ERROR")
 
@@ -18,7 +18,12 @@ object StreamState extends App {
 
   val lines =
     KafkaUtils
-      .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset).map(_._2).print()
+      .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset)
+      .map(x => (x._1,1))
+      .reduceByKey(_+_)
+      .print()
+
+
 
 //  lines.foreachRDD( rdd => {
 //
