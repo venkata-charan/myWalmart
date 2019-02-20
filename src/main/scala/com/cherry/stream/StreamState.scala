@@ -28,6 +28,7 @@ object StreamState extends App {
   val runningCounts = lines.updateStateByKey[Int](updateFunction _)
   runningCounts.print()
 
+  ssc.checkpoint("hdfs:///user/charanrajlv3971/checkpoint/")
   ssc.start()
   ssc.awaitTermination()
 
