@@ -25,7 +25,7 @@ object StreamState extends App {
         (ip, 1)
       })
 
-  val runningCounts = lines.updateStateByKey[Int](updateFunction)
+  val runningCounts = lines.updateStateByKey[Int](updateFunction _)
   runningCounts.print()
 
   ssc.start()
