@@ -21,6 +21,7 @@ object StreamState extends App {
       .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset)
       .map(x => (x._1,1))
       .reduceByKey(_+_)
+      .repartition(1)
       .print()
 
 
