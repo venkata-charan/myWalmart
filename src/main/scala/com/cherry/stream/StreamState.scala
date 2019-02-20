@@ -18,17 +18,17 @@ object StreamState extends App {
 
   val lines =
     KafkaUtils
-      .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset).map(_._2)
+      .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset).map(_._2).print()
 
-  lines.foreachRDD( rdd => {
-
-    if( rdd.count()>0 ) {
-      println("printing messages from kafka")
-      val repart_Rdd = rdd.repartition(1).cache()
-      repart_Rdd.collect()
-    }
-
-  })
+//  lines.foreachRDD( rdd => {
+//
+//    if( rdd.count()>0 ) {
+//      println("printing messages from kafka")
+//      val repart_Rdd = rdd.repartition(1).cache()
+//      repart_Rdd.collect()
+//    }
+//
+//  })
 
 //    .map(x => {
 //      val list1 = x._2.split(",")
