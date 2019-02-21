@@ -19,8 +19,8 @@ object kakfaProducer extends App {
   val props: Properties = new Properties()
   props.put("bootstrap.servers", brokerip)
   props.put("transactional.id", "my-transactional-id")
-  props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+  props.put("key.serializer", "kafka.serializer.StringEncoder")
+  props.put("value.serializer", "kafka.serializer.StringEncoder")
 
   val myProducer = new KafkaProducer[String, String](props)
 
@@ -31,7 +31,7 @@ object kakfaProducer extends App {
     for (i <- Range(0, events)) {
       val tim = new Date().getTime
       val ip = "192.34.233." + rnd.nextInt(255)
-      val msg = tim + "," + i + "www.some" + rnd.nextInt(255) + ".com, " + ip
+      val msg = tim + "," + i + "www.some" + rnd.nextInt(255) + ".com," + ip
       val data = new ProducerRecord[String, String](topic, ip, msg)
       myProducer.send(data)
     }
