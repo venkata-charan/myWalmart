@@ -3,7 +3,7 @@ package com.cherry.stream
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import kafka.serializer.StringDecoder
+import org.apache.kafka.common.serialization.StringDeserializer
 
 
 object StreamState extends App {
@@ -19,7 +19,7 @@ object StreamState extends App {
 
   val messages  =
     KafkaUtils
-      .createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicset)
+      .createDirectStream[String, String, StringDeserializer, StringDeserializer](ssc, kafkaParams, topicset)
 
   // Get the lines, split them into words, count the words and print
   val lines = messages.map(_._2)
