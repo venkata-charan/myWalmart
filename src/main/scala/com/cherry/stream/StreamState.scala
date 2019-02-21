@@ -15,7 +15,7 @@ object StreamState extends App {
 
   val topicset = Set(args(0))
   val kafkaParams = Map("metadata.broker.list" -> args(1), "enable.auto.commit" -> "true",
-    "auto.offset.reset" -> "smallest","fetch.max.bytes"->"52428800")
+    "auto.offset.reset" -> "smallest","fetch.message.max.bytes"->"52428800")
 
   val messages  =
     KafkaUtils
