@@ -19,8 +19,9 @@ object kakfaProducer extends App {
   val props: Properties = new Properties()
   props.put("bootstrap.servers", brokerip)
   props.put("transactional.id", "my-transactional-id")
-  props.put("key.serializer", "kafka.serializer.StringEncoder")
-  props.put("value.serializer", "kafka.serializer.StringEncoder")
+  props.put("serializer.class", "kafka.serializer.StringEncoder")
+  props.put("key.serializer.class", "kafka.serializer.StringEncoder")
+  props.put("value.serializer.class", "kafka.serializer.StringEncoder")
 
   val myProducer = new KafkaProducer[String, String](props)
 
